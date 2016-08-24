@@ -1,0 +1,29 @@
+{
+  "name": "workflow-flex",
+  "version": "1.0.0",
+  "description": "Flexable Workflow",
+  "main": "cute-files.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justjoe22/workflow-flex.git"
+  },
+  "keywords": [
+    "Flex",
+    "Flexable",
+    "Workflow"
+  ],
+  "author": "Joe Prewitt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/justjoe22/workflow-flex/issues"
+  },
+  "homepage": "https://github.com/justjoe22/workflow-flex#readme",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "content-disposition": "^0.5.1",
+    "express": "^4.14.0"
+  }
+}
