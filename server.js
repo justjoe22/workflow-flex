@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var fs = require("fs");
 
+//var firebase = require("firebase");
+
 var bodyParser = require('body-parser');
 var multer  = require('multer');
 
