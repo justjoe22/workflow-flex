@@ -1,8 +1,12 @@
+/*global controldef*/
+
 var express = require('express');
 var app = express();
 var fs = require("fs");
 
 var firebase = require("firebase");
+//app.use(express.static('/controls.js'));
+
 
 // Initialize Firebase
 var config = {
@@ -18,6 +22,7 @@ firebase.initializeApp(config);
 firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             console.log('Success: ' + user.uid);
+            
         }
         else {
             console.log('Login Failed.');
@@ -67,7 +72,10 @@ app.post('/login_post', urlencodedParser, function (req, res) {
     // [END authwithemail]
    
    //console.log(response);
-   res.end('<p>You are logged in as <b>' + response.user_name + '</b>.</p><br><div id="content"></div>');
+   var vHtml = '<br /><p>You are logged in as <b>' + response.user_name + '</b>.</p><br />';
+   //vHtml += controldef('input','text','Sample','','');
+   
+   res.end(vHtml);
 })
 
 app.post('/file_upload', function (req, res) {
