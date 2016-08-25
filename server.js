@@ -67,7 +67,7 @@ app.post('/process_post', urlencodedParser, function (req, res) {
     // [END authwithemail]
    
    //console.log(response);
-   res.end(JSON.stringify(response));
+   res.end('<p><b>' + JSON.stringify(response) + '</b></p>');
 })
 
 app.post('/file_upload', function (req, res) {
