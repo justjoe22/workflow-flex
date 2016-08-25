@@ -2,7 +2,27 @@ var express = require('express');
 var app = express();
 var fs = require("fs");
 
-//var firebase = require("firebase");
+var firebase = require("firebase");
+
+// Initialize Firebase
+var config = {
+apiKey: "AIzaSyDi-aGkMS311c8s4aHBYMgqc6e1BlJHFlo",
+authDomain: "workflow-flex.firebaseapp.com",
+databaseURL: "https://workflow-flex.firebaseio.com",
+storageBucket: "workflow-flex.appspot.com",
+};
+
+/*global firebase*/
+firebase.initializeApp(config);
+
+firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            console.log('Success: ' + user.uid);
+        }
+        else {
+            console.log('Login Failed.');
+        }
+});
 
 var bodyParser = require('body-parser');
 var multer  = require('multer');
@@ -19,15 +39,34 @@ app.get('/index.html', function (req, res) {
 })
 
 app.post('/process_post', urlencodedParser, function (req, res) {
-
+    
+    var varUser;
+    var varPassword;
+    
    // Prepare output in JSON format
    /*global response*/
    response = {
-       first_name:req.body.first_name,
-       last_name:req.body.last_name
+       user_name:req.body.User_Name,
+       password:req.body.password
    };
    
-   console.log(response);
+    // [START authwithemail]
+    firebase.auth().signInWithEmailAndPassword(response.user_name, response.password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // [START_EXCLUDE]
+      if (errorCode === 'auth/wrong-password') {
+        alert('Wrong password.');
+      } else {
+        console.log(errorCode);
+        console.log(errorMessage);
+      }
+      // [END_EXCLUDE]
+    });
+    // [END authwithemail]
+   
+   //console.log(response);
    res.end(JSON.stringify(response));
 })
 
