@@ -1,20 +1,7 @@
 <html>
     <body>
-        <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
-        <script>
-          // Initialize Firebase
-          var config = {
-            apiKey: "AIzaSyDi-aGkMS311c8s4aHBYMgqc6e1BlJHFlo",
-            authDomain: "workflow-flex.firebaseapp.com",
-            databaseURL: "https://workflow-flex.firebaseio.com",
-            storageBucket: "workflow-flex.appspot.com",
-          };
-          
-          /*global firebase*/
-          firebase.initializeApp(config);
-        </script>
-        
-        <form action="/process_post" method="POST">
+
+        <form action="/login_post" method="POST">
             User: <input type="email" name="User_Name">  <br>
         
             Password: <input type="password" name="password">

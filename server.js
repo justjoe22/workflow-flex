@@ -38,7 +38,7 @@ app.get('/index.html', function (req, res) {
    res.sendFile( __dirname + "/" + "index.html" );
 })
 
-app.post('/process_post', urlencodedParser, function (req, res) {
+app.post('/login_post', urlencodedParser, function (req, res) {
     
     var varUser;
     var varPassword;
@@ -67,7 +67,7 @@ app.post('/process_post', urlencodedParser, function (req, res) {
     // [END authwithemail]
    
    //console.log(response);
-   res.end('<p><b>' + JSON.stringify(response) + '</b></p>');
+   res.end('<p>You are logged in as <b>' + response.user_name + '</b>.</p><br><div id="content"></div>');
 })
 
 app.post('/file_upload', function (req, res) {
