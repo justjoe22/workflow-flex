@@ -2,7 +2,6 @@
 
 var express = require('express');
 var app = express();
-var fs = require("fs");
 
 var firebase = require("firebase");
 var controls = require("./controls");
@@ -30,7 +29,6 @@ firebase.auth().onAuthStateChanged(function(user) {
 });
 
 var bodyParser = require('body-parser');
-var multer  = require('multer');
 
 // Create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -44,9 +42,6 @@ app.get('/index.html', function (req, res) {
 })
 
 app.post('/login_post', urlencodedParser, function (req, res) {
-    
-    var varUser;
-    var varPassword;
     
    // Prepare output in JSON format
    /*global response*/
@@ -80,29 +75,6 @@ app.post('/login_post', urlencodedParser, function (req, res) {
    
 })
 
-app.post('/file_upload', function (req, res) {
-
-   console.log(req.files.file.name);
-   console.log(req.files.file.path);
-   console.log(req.files.file.type);
-
-   var file = __dirname + "/" + req.files.file.name;
-   fs.readFile( req.files.file.path, function (err, data) {
-        fs.writeFile(file, data, function (err) {
-         if( err ){
-              console.log( err );
-         }else{
-               response = {
-                   message:'File uploaded successfully',
-                   filename:req.files.file.name
-              };
-          }
-          console.log( response );
-          res.end( JSON.stringify( response ) );
-       });
-   });
-})
-
 // This responds with "Hello World" on the homepage
 app.get('/', function (req, res) {
    console.log("Got a GET request for the homepage");
@@ -126,12 +98,6 @@ app.delete('/del_user', function (req, res) {
 app.get('/list_user', function (req, res) {
    console.log("Got a GET request for /list_user");
    res.send('Page Listing');
-})
-
-// This responds a GET request for abcd, abxcd, ab123cd, and so on
-app.get('/ab*cd', function(req, res) {   
-   console.log("Got a GET request for /ab*cd");
-   res.send('Page Pattern Match');
 })
 
 var server = app.listen(8081, function () {
