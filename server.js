@@ -73,11 +73,11 @@ app.post('/login_post', urlencodedParser, function (req, res) {
    
    //console.log(response);
    var vHtml = '<br /><p>You are logged in as <b>' + response.user_name + '</b>...</p><br />';
+   vHtml += '<br /><p><b>My Form</b></p><br />';
    vHtml += controls.controldef('input','text','Sample','myID','');
    
    res.end(vHtml);
    
-   //res.send({redirect: '/home'});
 })
 
 app.post('/file_upload', function (req, res) {
