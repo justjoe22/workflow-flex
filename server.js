@@ -5,7 +5,7 @@ var app = express();
 var fs = require("fs");
 
 var firebase = require("firebase");
-var controls = app.use(express.static('/controls.js'));
+var controls = require("./controls");
 
 
 // Initialize Firebase
@@ -73,7 +73,7 @@ app.post('/login_post', urlencodedParser, function (req, res) {
    
    //console.log(response);
    var vHtml = '<br /><p>You are logged in as <b>' + response.user_name + '</b>...</p><br />';
-   vHtml += controls.controldef('input','text','Sample','','');
+   vHtml += controls.controldef('input','text','Sample','myID','');
    
    res.end(vHtml);
    
