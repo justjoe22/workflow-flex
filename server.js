@@ -1,4 +1,5 @@
 /*global controldef*/
+/* global $ */
 
 var express = require('express');
 var app = express();
@@ -27,6 +28,8 @@ firebase.auth().onAuthStateChanged(function(user) {
               vHtml += '<br /><p>You are logged in as <b>' + response.user_name + '</b>...</p><br />';
               vHtml += '<br /><p><b>My Form</b></p><br />';
               vHtml += controls.controldef('input','text','Sample','myID','');
+              
+              $("./container").html(vHtml);
 
         }
         else {
@@ -38,11 +41,9 @@ firebase.auth().onAuthStateChanged(function(user) {
               vHtml += '<input type="submit" value="Submit">';
               vHtml += '</form>';
               
+              $("./container").html(vHtml);
+              
         }
-        
-        /* global $ */
-        $("./masterPage").html(vHtml);
-        
 });
 
 app.all('/secret', function (req, res, next) {
