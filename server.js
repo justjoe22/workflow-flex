@@ -1,5 +1,6 @@
 /*global controldef*/
 /* global $ */
+/* global res */
 
 var express = require('express');
 var app = express();
@@ -29,7 +30,7 @@ firebase.auth().onAuthStateChanged(function(user) {
               vHtml += '<br /><p><b>My Form</b></p><br />';
               vHtml += controls.controldef('input','text','Sample','myID','');
               
-              $("./container").html(vHtml);
+              res.render("masterPage", vHtml);
 
         }
         else {
@@ -41,7 +42,7 @@ firebase.auth().onAuthStateChanged(function(user) {
               vHtml += '<input type="submit" value="Submit">';
               vHtml += '</form>';
               
-              $("./container").html(vHtml);
+              res.render("masterPage", vHtml);
               
         }
 });
@@ -60,8 +61,8 @@ app.use(express.static('public'));
 //app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(multer({ dest: 'tmp'}));
 
-app.get('/main.html', function (req, res) {
-   res.sendFile( __dirname + "/" + "main.html" );
+app.get('/index.html', function (req, res) {
+   res.sendFile( __dirname + "/" + "index.html" );
 })
 
 app.post('/login', urlencodedParser, function (req, res) {
