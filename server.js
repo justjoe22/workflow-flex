@@ -20,50 +20,18 @@ storageBucket: "workflow-flex.appspot.com",
 /*global firebase*/
 firebase.initializeApp(config);
 
-firebase.auth().onAuthStateChanged(function(user) {
-    var vHtml = '';
-      
-        if (user) {
-            console.log('Success: ' + user.uid);
-            
-              vHtml += '<br /><p>You are logged in as <b>' + response.user_name + '</b>...</p><br />';
-              vHtml += '<br /><p><b>My Form</b></p><br />';
-              vHtml += controls.controldef('input','text','Sample','myID','');
-              
-              res.render("masterPage", vHtml);
-
-        }
-        else {
-            console.log('Login Failed.');
-            
-              vHtml += '<form action="/login" method="POST">';
-              vHtml += 'User: <input type="email" name="User_Name"><br>';
-              vHtml += 'Password: <input type="password" name="password">';
-              vHtml += '<input type="submit" value="Submit">';
-              vHtml += '</form>';
-              
-              res.render("masterPage", vHtml);
-              
-        }
-});
-
-app.all('/secret', function (req, res, next) {
-  console.log('Accessing the secret section ...');
-  next(); // pass control to the next handler
-});
-
 var bodyParser = require('body-parser');
 
 // Create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-app.use(express.static('public'));
+// app.use(express.static('public'));
 //app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(multer({ dest: 'tmp'}));
 
-app.get('/index.html', function (req, res) {
-   res.sendFile( __dirname + "/" + "index.html" );
-})
+// app.get('/index.html', function (req, res) {
+//   res.sendFile( __dirname + "/" + "index.html" );
+// })
 
 app.post('/login', urlencodedParser, function (req, res) {
     
@@ -90,16 +58,47 @@ app.post('/login', urlencodedParser, function (req, res) {
     });
     // [END authwithemail]
 
-    res.end();
+    res.redirect("/home");
    
 })
 
+app.get('/', function (req, res) {
+  
+      firebase.auth().onAuthStateChanged(function(user) {
+        var vHtml = '';
+          
+            if (user) {
+                console.log('Success: ' + user.uid);
+                
+                  vHtml += '<br /><p>You are logged in as <b>' + response.user_name + '</b>...</p><br />';
+                  vHtml += '<br /><p><b>My Form</b></p><br />';
+                  vHtml += controls.controldef('input','text','Sample','myID','');
+                  
+                  res.send(vHtml);
+    
+            }
+            else {
+                console.log('Login Failed.');
+                
+                  vHtml += '<form action="/login" method="POST">';
+                  vHtml += 'User: <input type="email" name="User_Name"><br>';
+                  vHtml += 'Password: <input type="password" name="password">';
+                  vHtml += '<input type="submit" value="Submit">';
+                  vHtml += '</form>';
+                  
+                  res.send(vHtml);
+                  
+        }
+    });
 
-// // This responds a POST request for the homepage
-// app.post('/', function (req, res) {
-//   console.log("Got a POST request for the homepage");
-//   res.send('Hello POST');
-// })
+  
+})
+
+app.get('/home', function (req, res) {
+  
+    res.redirect("/");
+  
+})
 
 // // This responds a DELETE request for the /del_user page.
 // app.delete('/del_user', function (req, res) {
