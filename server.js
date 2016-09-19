@@ -58,7 +58,7 @@ app.post('/login', urlencodedParser, function (req, res) {
     });
     // [END authwithemail]
 
-    res.redirect("/home");
+    res.redirect("/");
    
 })
 
@@ -90,15 +90,35 @@ app.get('/', function (req, res) {
                   
         }
     });
-
   
 })
 
-app.get('/home', function (req, res) {
-  
-    res.redirect("/");
-  
-})
+      firebase.auth().onAuthStateChanged(function(user) {
+        var vHtml = '';
+          
+            if (user) {
+                console.log('Success: ' + user.uid);
+                
+                  vHtml += '<br /><p>You are logged in as <b>' + response.user_name + '</b>...</p><br />';
+                  vHtml += '<br /><p><b>My Form</b></p><br />';
+                  vHtml += controls.controldef('input','text','Sample','myID','');
+                  
+                  res.send(vHtml);
+    
+            }
+            else {
+                console.log('Login Failed.');
+                
+                  vHtml += '<form action="/login" method="POST">';
+                  vHtml += 'User: <input type="email" name="User_Name"><br>';
+                  vHtml += 'Password: <input type="password" name="password">';
+                  vHtml += '<input type="submit" value="Submit">';
+                  vHtml += '</form>';
+                  
+                  res.send(vHtml);
+                  
+        }
+    });
 
 // // This responds a DELETE request for the /del_user page.
 // app.delete('/del_user', function (req, res) {
