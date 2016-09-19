@@ -58,7 +58,16 @@ app.post('/login', urlencodedParser, function (req, res) {
     });
     // [END authwithemail]
 
-    res.redirect("/");
+    res.redirect('/');
+})
+
+app.post('/logout', urlencodedParser, function (req, res) {
+    
+   // Prepare output in JSON format
+
+    firebase.auth().signOut();
+     
+    res.redirect('/');
    
 })
 
@@ -73,6 +82,10 @@ app.get('/', function (req, res) {
                   vHtml += '<br /><p>You are logged in as <b>' + response.user_name + '</b>...</p><br />';
                   vHtml += '<br /><p><b>My Form</b></p><br />';
                   vHtml += controls.controldef('input','text','Sample','myID','');
+                  vHtml += '<br>'
+                  vHtml += '<form action="/logout" method="POST">';
+                  vHtml += '<input type="submit" value="Log Out">';
+                  vHtml += '</form>';
                   
                   res.send(vHtml);
     
@@ -93,44 +106,6 @@ app.get('/', function (req, res) {
   
 })
 
-      firebase.auth().onAuthStateChanged(function(user) {
-        var vHtml = '';
-          
-            if (user) {
-                console.log('Success: ' + user.uid);
-                
-                  vHtml += '<br /><p>You are logged in as <b>' + response.user_name + '</b>...</p><br />';
-                  vHtml += '<br /><p><b>My Form</b></p><br />';
-                  vHtml += controls.controldef('input','text','Sample','myID','');
-                  
-                  res.send(vHtml);
-    
-            }
-            else {
-                console.log('Login Failed.');
-                
-                  vHtml += '<form action="/login" method="POST">';
-                  vHtml += 'User: <input type="email" name="User_Name"><br>';
-                  vHtml += 'Password: <input type="password" name="password">';
-                  vHtml += '<input type="submit" value="Submit">';
-                  vHtml += '</form>';
-                  
-                  res.send(vHtml);
-                  
-        }
-    });
-
-// // This responds a DELETE request for the /del_user page.
-// app.delete('/del_user', function (req, res) {
-//   console.log("Got a DELETE request for /del_user");
-//   res.send('Hello DELETE');
-// })
-
-// // This responds a GET request for the /list_user page.
-// app.get('/list_user', function (req, res) {
-//   console.log("Got a GET request for /list_user");
-//   res.send('Page Listing');
-// })
 
 var server = app.listen(8081, function () {
 
