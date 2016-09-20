@@ -81,8 +81,16 @@ app.get('/', function (req, res) {
                 
                   vHtml += '<br /><p>You are logged in as <b>' + response.user_name + '</b>...</p><br />';
                   vHtml += '<br /><p><b>My Form</b></p><br />';
-                  vHtml += controls.controldef('input','text','Sample','myID','');
-                  vHtml += '<br>'
+                  
+                  var controlref = firebase.database().ref('control-set/starter');
+                  
+                  controlref.on('value', function(data) {
+                      var controlid = data.val().controlid;
+                      
+                      vHtml += controls.controldef('input','text','Sample',controlid,'');
+                  });
+                  
+                  vHtml += '<br>';
                   vHtml += '<form action="/logout" method="POST">';
                   vHtml += '<input type="submit" value="Log Out">';
                   vHtml += '</form>';
