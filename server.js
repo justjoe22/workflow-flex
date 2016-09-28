@@ -84,27 +84,21 @@ app.get('/', function (req, res) {
                   res.send(vHtml);
                   
                   var controlref = firebase.database().ref('control-set/starter');
+                  var controlid = "";
                   
                   controlref.on("value", function(snapshot) {
-                      var controlid = snapshot.val().controlid;
-                      
-                      var cntrlHtml = '<br /><p><b>My Form</b></p><br />';
+                      controlid = snapshot.val().controlid;
+
+                    }, function(errorObject) {
+                      console.log("The read failed: " + errorObject.code);
+                    });
+                    
+                var cntrlHtml = '<br /><p><b>My Form</b></p><br />';
                       cntrlHtml += controls.controldef('input','text','Sample',controlid,'');
                       cntrlHtml += '<br>';
                       cntrlHtml += '<form action="/logout" method="POST">';
                       cntrlHtml += '<input type="submit" value="Log Out">';
                       cntrlHtml += '</form>';
-                      
-                    //   var div = document.createElement('div'),
-                    //     text = document.createTextNode(cntrlHtml);
-
-                    //     div.className="colorBox blueBack";
-                    //     div.appendChild(text);
-                    //     document.getElementsByTagName('body')[0].appendChild(div);
-                      
-                    }, function(errorObject) {
-                      console.log("The read failed: " + errorObject.code);
-                    });
                     
             }
             else {
