@@ -80,23 +80,32 @@ app.get('/', function (req, res) {
                 console.log('Success: ' + user.uid);
                 
                   vHtml += '<br /><p>You are logged in as <b>' + response.user_name + '</b>...</p><br />';
-                  vHtml += '<br /><p><b>My Form</b></p><br />';
+                  vHtml += '<div id="myform"></div>';
+                  res.send(vHtml);
                   
                   var controlref = firebase.database().ref('control-set/starter');
                   
-                  controlref.on('value', function(data) {
-                      var controlid = data.val().controlid;
+                  controlref.on("value", function(snapshot) {
+                      var controlid = snapshot.val().controlid;
                       
-                      vHtml += controls.controldef('input','text','Sample',controlid,'');
-                  });
-                  
-                  vHtml += '<br>';
-                  vHtml += '<form action="/logout" method="POST">';
-                  vHtml += '<input type="submit" value="Log Out">';
-                  vHtml += '</form>';
-                  
-                  res.send(vHtml);
-    
+                      var cntrlHtml = '<br /><p><b>My Form</b></p><br />';
+                      cntrlHtml += controls.controldef('input','text','Sample',controlid,'');
+                      cntrlHtml += '<br>';
+                      cntrlHtml += '<form action="/logout" method="POST">';
+                      cntrlHtml += '<input type="submit" value="Log Out">';
+                      cntrlHtml += '</form>';
+                      
+                    //   var div = document.createElement('div'),
+                    //     text = document.createTextNode(cntrlHtml);
+
+                    //     div.className="colorBox blueBack";
+                    //     div.appendChild(text);
+                    //     document.getElementsByTagName('body')[0].appendChild(div);
+                      
+                    }, function(errorObject) {
+                      console.log("The read failed: " + errorObject.code);
+                    });
+                    
             }
             else {
                 console.log('Login Failed.');
