@@ -5,6 +5,9 @@
 var express = require('express');
 var app = express();
 
+var jsdom = require('jsdom');
+var $ = null;
+
 var firebase = require("firebase");
 var controls = require("./controls");
 
@@ -79,26 +82,43 @@ app.get('/', function (req, res) {
             if (user) {
                 console.log('Success: ' + user.uid);
                 
+                  vHtml += '<!doctype html>';
+                  vHtml += '<html><head><meta charset="UTF-8"><title>Workflow-FLEX</title></head><body>'
                   vHtml += '<br /><p>You are logged in as <b>' + response.user_name + '</b>...</p><br />';
                   vHtml += '<div id="myform"></div>';
-                  res.send(vHtml);
+                  vHtml += '</body></html>';
+                
+                   res.send(vHtml);
                   
                   var controlref = firebase.database().ref('control-set/starter');
                   var controlid = "";
+                  var controlname = "";
+                  var controltype = "";
+                  var formname = "";
+                  var formid = "";
+                  var inputtype = "";
                   
                   controlref.on("value", function(snapshot) {
-                      controlid = snapshot.val().controlid;
-
+                      controlid = snapshot.val().controlId;
+                      controlname = snapshot.val().controlName;
+                      controltype = snapshot.val().controlType;
+                      formname = snapshot.val().formName;
+                      formid =  snapshot.val().formId;
+                      inputtype = snapshot.val().inputType;
+                      
+                      var cntrlHtml = '<br /><p><b>' + formname + '</b></p><br />';
+                      cntrlHtml += controls.controldef(controltype,inputtype,controlname,controlid,'');
+                      cntrlHtml += '<br>';
+                      cntrlHtml += '<form action="/logout" name="' + formid + '" method="POST">';
+                      cntrlHtml += '<input type="submit" value="Log Out">';
+                      cntrlHtml += '</form>';
+                      
+                      $('#myform').appendTo(cntrlHtml);
+                      //$('#myform').html(cntrlHtml);
+                      
                     }, function(errorObject) {
                       console.log("The read failed: " + errorObject.code);
                     });
-                    
-                var cntrlHtml = '<br /><p><b>My Form</b></p><br />';
-                      cntrlHtml += controls.controldef('input','text','Sample',controlid,'');
-                      cntrlHtml += '<br>';
-                      cntrlHtml += '<form action="/logout" method="POST">';
-                      cntrlHtml += '<input type="submit" value="Log Out">';
-                      cntrlHtml += '</form>';
                     
             }
             else {
@@ -117,12 +137,21 @@ app.get('/', function (req, res) {
   
 })
 
-
 var server = app.listen(8081, function () {
 
   var host = server.address().address
   var port = server.address().port
+  var url = "https://workflow-flex-justjoe22.c9users.io:" + port;
 
+    jsdom.env(
+     url,
+     function (err, window) {
+       $ = require('jquery')(window);
+       
+       console.log(err);
+     }
+    );
+    
   console.log("Workflow-Flex listening at https://workflow-flex-justjoe22.c9users.io:" + port + " Host: " + host)
 
 })
