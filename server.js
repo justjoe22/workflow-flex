@@ -107,7 +107,7 @@ app.get('/', function (req, res) {
                       inputtype = snapshot.val().inputType;
                       
                       var cntrlHtml = '<br /><p><b>' + formname + '</b></p><br />';
-                      cntrlHtml += controls.controldef(controltype,inputtype,controlname,controlid,'');
+                      cntrlHtml += controls.controldef(controltype,inputtype,controlname,controlid,'','');
                       cntrlHtml += '<br>';
                       cntrlHtml += '<form action="/logout" name="' + formid + '" method="POST">';
                       cntrlHtml += '<input type="submit" value="Log Out">';
